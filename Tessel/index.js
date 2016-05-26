@@ -7,16 +7,16 @@ var mqtt = require( 'mqtt' );
 var path = require( 'path' );
 var tessel = require( 'tessel' );
 
-// Application variables
-var bounce;
-var button;
-var client;
-var config;
-var interval;
-var led;
-var reading;
-var photocell;
-var pressed;
+var bounce;			// Interval for button
+var bright;			// Interval for photocell
+var button;			// Button pin
+var client;			// Watson IoT client
+var config;			// Authentication
+var interval;		// Interval for publish
+var light;			// Photocell reading
+var led;			// LED state
+var photocell;		// Photocell pin
+var pressed;		// Button press
 
 // Load external authentication
 config = jsonfile.readFileSync( path.join( __dirname, 'config.json' ) );
@@ -38,42 +38,39 @@ led.output( 0 );
 // Treat as analog input
 photocell = tessel.port.B.pin[3];
 
+bright = setInterval( function() {
+	photocell.analogRead( function( err, value ) {
+		light = value;
+	} );
+}, 100 );
+
 // Work with button on pin 5
 button = tessel.port.B.pin[5];
-reading = false;
 pressed = false;
 
 // Monitor button pin
 bounce = setInterval( function() {
-	// Only read if not already reading
-	if( !reading ) {
-		// Going to read
-		reading = true;
-		
-		// Asynchromouns button reading
-		button.read( function( err, value ) {
-			// Up
-			if( value === 0 ) {
-				pressed = false;
-			// Down
-			} else if( value === 1 ) {
-				// Only fire press once
-				if( !pressed ) {
-					pressed = true;
-					
-					// Publish value to Watson IoT
-					client.publish( 'iot-2/evt/button/fmt/json', JSON.stringify( {
-						pressed: pressed
-					} ) );					
-					
-					console.log( 'Pressed.' );
-				}
+	// Asynchromouns button reading
+	// Digital signal (on or off)
+	button.read( function( err, value ) {
+		// Up (off)
+		if( value === 0 ) {
+			pressed = false;
+		// Down (on)
+		} else if( value === 1 ) {
+			// Only fire press once
+			if( !pressed ) {
+				pressed = true;
+				
+				// Publish value to Watson IoT
+				client.publish( 'iot-2/evt/button/fmt/json', JSON.stringify( {
+					pressed: pressed
+				} ) );					
+				
+				console.log( 'Pressed.' );
 			}
-			
-			// Finished reading
-			reading = false;
-		} );
-	}
+		}
+	} );	
 }, 100 );
 
 // Connected
@@ -90,16 +87,11 @@ client.on( 'connect', function() {
 	// Send light value to clients
 	// Decoupled from reading	
 	interval = setInterval( function() {
-		// Read pin value
-		// Between 0 (dark) and 3.3 (light)
-		photocell.analogRead( function( err, value ) {
-			// Publish value to Watson IoT
-			client.publish( 'iot-2/evt/light/fmt/json', JSON.stringify( {
-				light: value
-			} ) );
-		
-			console.log( 'Light: ' + value );					
-		} );		
+		client.publish( 'iot-2/evt/light/fmt/json', JSON.stringify( {
+			light: light
+		} ) );
+
+		console.log( 'Light: ' + light );
 	}, 1000 );
 } );
 

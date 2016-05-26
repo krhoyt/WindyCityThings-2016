@@ -1,6 +1,12 @@
 var client;
 var led;
 
+// Linear transform
+// Similar to Arduino map function
+function map( x, in_min, in_max, out_min, out_max ) {
+	return ( x - in_min ) * ( out_max - out_min ) / ( in_max - in_min ) + out_min;
+}
+
 // Connected to broker
 // Subscribe for count topic
 function doClientConnect( context ) {
@@ -17,6 +23,7 @@ function doClientFailure( context, code, message ) {
 // Message arrived
 function doMessageArrived( message ) {
 	var data = null;
+	var element = null;
 
 	// Parse
 	data = JSON.parse( message.payloadString );
@@ -26,6 +33,8 @@ function doMessageArrived( message ) {
 	if( message.destinationName.indexOf( 'button' ) >= 0 ) {		
 		console.log( 'Button: ' + data.pressed );
 	} else if( message.destinationName.indexOf( 'light' ) >= 0 ) {
+		element = document.querySelector( '.darkness' );
+		element.style.opacity = map( data.light, 0, 2, 1, 0 );
 		console.log( 'Light: ' + data.light );
 	}
 }	
@@ -56,7 +65,7 @@ function doWindowLoad() {
 	led = 0;
 	
 	// Let the user change the LED state
-	button = document.querySelector( 'button' );
+	button = document.querySelector( '.darkness' );
 	button.addEventListener( 'click', doToggleClick );
 	
 	// Instantiate client

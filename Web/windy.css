@@ -1,0 +1,31 @@
+.darkness {
+	background-color: rgb( 0, 0, 0 );
+	bottom: 0;
+	left: 0;
+	position: absolute;
+	opacity: 1;
+	right: 0;
+	top: 0;
+}
+
+.room {
+	background-image: url( 'room.jpg' );
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	bottom: 0;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+.watson {
+	background-color: blue;
+	bottom: 0;
+	height: 25;
+	left: 0;
+	position: absolute;
+	right: 0;
+	visibility: hidden;
+}
