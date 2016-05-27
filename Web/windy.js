@@ -1,18 +1,12 @@
 var client;
 var led;
 
-// Linear transform
-// Similar to Arduino map function
-function map( x, in_min, in_max, out_min, out_max ) {
-	return ( x - in_min ) * ( out_max - out_min ) / ( in_max - in_min ) + out_min;
-}
-
 // Connected to broker
 // Subscribe for count topic
 function doClientConnect( context ) {
     console.log( 'Connected.' );
-	client.subscribe( 'iot-2/type/Tessel/id/IBM/evt/light/fmt/json' );
-	client.subscribe( 'iot-2/type/Tessel/id/IBM/evt/button/fmt/json' );	
+	client.subscribe( 'iot-2/type/+/id/IBM/evt/light/fmt/json' );
+	client.subscribe( 'iot-2/type/+/id/IBM/evt/button/fmt/json' );	
 }    
     
 // Unable to connect
@@ -34,7 +28,7 @@ function doMessageArrived( message ) {
 		console.log( 'Button: ' + data.pressed );
 	} else if( message.destinationName.indexOf( 'light' ) >= 0 ) {
 		element = document.querySelector( '.darkness' );
-		element.style.opacity = map( data.light, 0, 2, 1, 0 );
+		element.style.opacity = 1 - ( data.light / 100 );
 		console.log( 'Light: ' + data.light );
 	}
 }	

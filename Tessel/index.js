@@ -88,7 +88,7 @@ client.on( 'connect', function() {
 	// Decoupled from reading	
 	interval = setInterval( function() {
 		client.publish( 'iot-2/evt/light/fmt/json', JSON.stringify( {
-			light: light
+			light: map( light, 0, 3.3, 0, 100 )
 		} ) );
 
 		console.log( 'Light: ' + light );
@@ -108,3 +108,9 @@ client.on( 'message', function( topic, message, packet ) {
 	
 	console.log( 'Message: ' + data.led );
 } );
+
+// Linear transform
+// Similar to Arduino map function
+function map( x, in_min, in_max, out_min, out_max ) {
+	return ( x - in_min ) * ( out_max - out_min ) / ( in_max - in_min ) + out_min;
+}
