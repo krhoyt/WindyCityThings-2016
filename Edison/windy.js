@@ -19,11 +19,10 @@ config = jsonfile.readFileSync( path.join( __dirname, 'config.json' ) );
 
 // Connect to Watson IoT
 client = mqtt.connect( config.host, {
-    clientId: config.client,
+	clientId: config.client,
     password: config.password,
     username: 'use-token-auth'
-  }
-);
+} );
 
 // LED
 // GP14 == 36 on SparkFun GPIO Block
