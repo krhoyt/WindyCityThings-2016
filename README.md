@@ -10,6 +10,10 @@ There are no shortage of IoT platforms to launch you next product, but which one
 
 Code (Node.js) for example application running on a Intel Edison.
 
+##Imp
+
+Code (Squirrel) for example application running on an Electric Imp.
+
 ##Photon
 
 Code (C++) for example application running on a Particle Photon.
@@ -17,6 +21,10 @@ Code (C++) for example application running on a Particle Photon.
 ##Tessel
 
 Code (Node.js) for example application running on a Tessel 2.
+
+##Thing
+
+Code (Arduino, C/C++) for example application running on a SparkFun Thing.
 
 ##Web
 
