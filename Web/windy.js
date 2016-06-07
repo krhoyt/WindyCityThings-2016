@@ -45,7 +45,7 @@ function doToggleClick() {
 	message = new Paho.MQTT.Message( JSON.stringify( {
 		led: led
 	} ) );
-	message.destinationName = 'iot-2/type/Imp/id/IBM/cmd/led/fmt/json';
+	message.destinationName = 'iot-2/type/Electron/id/IBM/cmd/led/fmt/json';
 	
 	// Send
 	client.send( message );	
