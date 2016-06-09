@@ -1,7 +1,7 @@
 // Physical parts
 const int PIN_BUTTON = D1;
 const int PIN_LED = D0;
-const int PIN_PHOTOCELL = A1;
+const int PIN_PHOTOCELL = A0;
 
 // Suppress multiple publishes
 // Button down will continue to read high while down

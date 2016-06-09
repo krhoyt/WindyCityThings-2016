@@ -49,10 +49,10 @@ light();
 // Button
 local pressed = false;
 
-// Digital input on pin 5
+// Digital input on pin 7
 // Callback on state change
 // Sampling rate of 100ms
-button <- hardware.pin5;
+button <- hardware.pin7;
 button.configure( DIGITAL_IN, function() {
     // Read button state
     local value = button.read();
