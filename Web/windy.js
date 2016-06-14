@@ -86,7 +86,8 @@ function doBoardClick() {
     
 	// Build message
 	message = new Paho.MQTT.Message( JSON.stringify( {
-		led: led
+		calling: 'led',
+        value: led.toString()
 	} ) );
 	message.destinationName = 'iot-2/type/' + topic + '/id/IBM/cmd/led/fmt/json';
 	

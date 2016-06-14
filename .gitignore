@@ -2,4 +2,4 @@ config.js
 config.json
 node_modules/
 Constants.h
-/*.bin
+*.bin

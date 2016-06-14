@@ -4,7 +4,7 @@ http.onrequest( function( request, response ) {
     local data = http.jsondecode( request.body );
 
     // Send state to device
-    device.send( "led", data.led );    
+    device.send( "led", data.value.tointeger() );    
     response.send( 200, "OK" );
 } );
 
@@ -24,7 +24,7 @@ device.on( "photocell", function( data ) {
         url,
         {
             "Authorization": "Basic " + http.base64encode( 
-                "use-auth-token:rfE5OcyuxM5134kR+*" 
+                IOT_USER + ":" + IOT_TOKEN 
             ),
             "Content-Type": "application/json"
         },

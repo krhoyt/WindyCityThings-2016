@@ -9,7 +9,8 @@ const int PIN_PHOTOCELL = A0;
 // Only want to order one burger so toggle release state
 bool hold = false;
 
-// Send light values once per second
+// Send light values on non-blocking loop
+long interval = 60;
 long last = 0;
 
 // Setup
@@ -21,8 +22,11 @@ void setup() {
     pinMode( PIN_LED, OUTPUT );
     pinMode( PIN_PHOTOCELL, INPUT );
 
-    // Register cloud function
+    // Register cloud functions
+    // One for controlling LED
+    // One for reporting interval
     Particle.function( "led", led );
+    Particle.function( "rate", rate );
 }
 
 // Loop
@@ -64,7 +68,7 @@ void loop() {
 
   // Non-blocking delay
   // Wait one second
-  if( ( Time.now() - last ) >= 60 ) {
+  if( ( Time.now() - last ) >= interval ) {
     // Update for next delay
     last = Time.now();
 
@@ -91,4 +95,11 @@ int led( String value ) {
   }
 
   return result;
+}
+
+// Externally exposed function
+// Called to change reporting interval
+int rate( String value ) {
+  interval = value.toInt();
+  return 1;
 }

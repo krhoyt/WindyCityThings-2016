@@ -104,9 +104,9 @@ client.on( 'message', function( topic, message, packet ) {
 	data = JSON.parse( message );
 	
 	// Set LED state
-	led.output( data.led );
+	led.output( parseInt( data.value ) );
 	
-	console.log( 'Message: ' + data.led );
+	console.log( 'Message: ' + parseInt( data.value ) );
 } );
 
 // Linear transform
