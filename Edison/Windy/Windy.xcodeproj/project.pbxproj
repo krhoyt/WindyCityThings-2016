@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A959FF71D11BF0300680C00 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A959FF61D11BF0300680C00 /* Media.xcassets */; };
+		0A959FF91D11C97900680C00 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A959FF81D11C97900680C00 /* ChartView.swift */; };
 		0AF4B0B11D10C00B006885DB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF4B0B01D10C00B006885DB /* AppDelegate.swift */; };
 		0AF4B0B31D10C00B006885DB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF4B0B21D10C00B006885DB /* ViewController.swift */; };
 		0AF4B0B61D10C00B006885DB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0AF4B0B41D10C00B006885DB /* Main.storyboard */; };
@@ -15,6 +17,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A959FF61D11BF0300680C00 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		0A959FF81D11C97900680C00 /* ChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		0AF4B0AD1D10C00B006885DB /* Windy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Windy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AF4B0B01D10C00B006885DB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0AF4B0B21D10C00B006885DB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -38,6 +42,7 @@
 		0AF4B0A41D10C00B006885DB = {
 			isa = PBXGroup;
 			children = (
+				0A959FF61D11BF0300680C00 /* Media.xcassets */,
 				0AF4B0AF1D10C00B006885DB /* Windy */,
 				0AF4B0AE1D10C00B006885DB /* Products */,
 			);
@@ -60,6 +65,7 @@
 				0AF4B0B71D10C00B006885DB /* Assets.xcassets */,
 				0AF4B0B91D10C00B006885DB /* LaunchScreen.storyboard */,
 				0AF4B0BC1D10C00B006885DB /* Info.plist */,
+				0A959FF81D11C97900680C00 /* ChartView.swift */,
 			);
 			path = Windy;
 			sourceTree = "<group>";
@@ -124,6 +130,7 @@
 			files = (
 				0AF4B0BB1D10C00B006885DB /* LaunchScreen.storyboard in Resources */,
 				0AF4B0B81D10C00B006885DB /* Assets.xcassets in Resources */,
+				0A959FF71D11BF0300680C00 /* Media.xcassets in Resources */,
 				0AF4B0B61D10C00B006885DB /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -137,6 +144,7 @@
 			files = (
 				0AF4B0B31D10C00B006885DB /* ViewController.swift in Sources */,
 				0AF4B0B11D10C00B006885DB /* AppDelegate.swift in Sources */,
+				0A959FF91D11C97900680C00 /* ChartView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,6 +294,7 @@
 				0AF4B0C11D10C00B006885DB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

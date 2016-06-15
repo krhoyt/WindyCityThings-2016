@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -17,23 +18,57 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bdr-ZU-XBq">
-                                <rect key="frame" x="277" y="28" width="47" height="30"/>
-                                <state key="normal" title="Toggle"/>
+                            <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bdr-ZU-XBq">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="48"/>
+                                <inset key="contentEdgeInsets" minX="0.0" minY="48" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="Edison" backgroundImage="edison">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="0.0" y="0.0" width="47" height="30"/>
+                                </variation>
                                 <connections>
                                     <action selector="toggle:" destination="BYZ-38-t0r" eventType="touchDown" id="Yup-Pz-WmM"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iB5-J7-ctA" customClass="ChartView" customModule="Windy" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="500" width="600" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="GIj-u3-EzL"/>
+                                </constraints>
+                            </view>
+                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ITp-ec-qw2">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="bdr-ZU-XBq" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="lkv-mC-4oJ"/>
-                            <constraint firstItem="bdr-ZU-XBq" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="tnP-GF-6ND"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="iB5-J7-ctA" secondAttribute="bottom" id="5Dz-Uo-Eaf"/>
+                            <constraint firstItem="ITp-ec-qw2" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="9H9-U3-55a"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="iB5-J7-ctA" secondAttribute="trailing" constant="-20" id="MzD-hx-W8c"/>
+                            <constraint firstItem="iB5-J7-ctA" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="PUK-Kk-7aG"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="bdr-ZU-XBq" secondAttribute="trailing" constant="-20" id="XEe-zf-vO2"/>
+                            <constraint firstItem="bdr-ZU-XBq" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="ewF-yc-c6E"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="bdr-ZU-XBq" secondAttribute="bottom" id="fGu-33-iZb"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="ITp-ec-qw2" secondAttribute="bottom" id="hMv-Xg-2ze"/>
+                            <constraint firstItem="ITp-ec-qw2" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="lGD-i7-OKe"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ITp-ec-qw2" secondAttribute="trailing" constant="-20" id="lIH-MP-hOq"/>
+                            <constraint firstItem="bdr-ZU-XBq" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="o28-Lw-iM3"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="chart" destination="iB5-J7-ctA" id="YuO-of-q2c"/>
+                        <outlet property="emphasize" destination="ITp-ec-qw2" id="NKg-aa-fdl"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="355" y="176"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="edison" width="1024" height="800"/>
+    </resources>
 </document>

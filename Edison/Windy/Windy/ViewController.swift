@@ -3,6 +3,9 @@ import UIKit
 
 class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDelegate {
 
+    @IBOutlet weak var emphasize: UIView!
+    @IBOutlet weak var chart: ChartView!
+    
     var led:CBCharacteristic!
     var manager:CBCentralManager!
     var peripheral:CBPeripheral!
@@ -16,6 +19,11 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
+                
+        // Charting
+        chart.backgroundColor = UIColor.clearColor()
+        
+        // Bluetooth
         manager = CBCentralManager(delegate: self, queue: nil)
     }
 
@@ -29,8 +37,10 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
         }
         
         // Send to device
-        let data = NSData(bytes: &state, length: sizeof(UInt8))
-        peripheral.writeValue(data, forCharacteristic: led, type: CBCharacteristicWriteType.WithResponse)
+        if led != nil {
+            let data = NSData(bytes: &state, length: sizeof(UInt8))
+            peripheral.writeValue(data, forCharacteristic: led, type: CBCharacteristicWriteType.WithResponse)
+        }
     }
     
     // Scan
@@ -110,10 +120,22 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
         
         if characteristic.UUID == LIGHT_UUID {
             characteristic.value!.getBytes(&light, length: sizeof(UInt8))
+            
+            // Chart values
+            chart.add(Int(light))
+            
             debugPrint(light)
-            // labelCount.text = NSString(format: "%llu", count) as String
         } else if characteristic.UUID == BUTTON_UUID {
             characteristic.value!.getBytes(&button, length: sizeof(UInt8))
+            
+            // Bring to full red
+            self.emphasize.alpha = 1;
+            
+            // Fade over one second
+            UIView.animateWithDuration(1.0, animations: {
+                self.emphasize.alpha = 0;
+            })
+            
             debugPrint(button)
         }
     }
