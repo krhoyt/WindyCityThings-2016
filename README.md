@@ -8,7 +8,7 @@ There are no shortage of IoT platforms to launch you next product, but which one
 
 ##Edison
 
-Code (Node.js) for example application running on a Intel Edison.
+Code (Node.js) for example application running on a Intel Edison.  Also includes an iOS (Swift) application that works withe the Bluetooth Smart on the Edison.  Provides all the same functionality and user interface as web application, just native through BLE, not MQTT.
 
 ##Electron
 
