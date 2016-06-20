@@ -4,19 +4,14 @@
 // MRAA for hardware interaction
 // Bleno for Bluetooth Smart
 // Util for inheritance
+// Exec for running command line
 var bleno = require( 'bleno' );
 var jsonfile = require( 'jsonfile' );
 var mraa = require( 'mraa' );
 var mqtt = require( 'mqtt' );
 var path = require( 'path' );
+var exec = require( 'sync-exec' );
 var util = require( 'util' );
-
-/* Enable Bluetooth */
-/*
- * rfkill unblock bluetooth
- * killall bluetoothd
- * hciconfig hci0 up
-*/
 
 var BUTTON_UUID = 'aadae336-7ebb-4381-bdad-801627309d5e';
 var LED_UUID = '44cfb349-9b03-49ea-a2cf-af34efe48c0b';
@@ -37,6 +32,12 @@ var leading;		// LED characteristic
 var light; 			// Photocell reading
 var lightning;		// Light characteristic
 var pressed;		// Button press
+
+// Enable Bluetooth
+// Run process as root (sudo)
+console.log( exec( 'rfkill unblock bluetooth' ) );
+console.log( exec( 'killall bluetoothd' ) );
+console.log( exec( 'hciconfig hci0 up' ) );
 
 // Button characteristic (BLE)
 var ButtonCharacteristic = function() {
