@@ -1,14 +1,14 @@
+#include <ArduinoJson.h>
+#include "Constants.h"
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 
-const char* ssid = "Hoyt";
-const char* password = "Paige123";
-const char* mqtt_server = "ts200f.messaging.internetofthings.ibmcloud.com";
+StaticJsonBuffer<200> buffer;
+JsonObject& root = buffer.createObject();
 
 WiFiClient espClient;
 PubSubClient client( espClient );
 long lastMsg = 0;
-char msg[50];
 int value = 0;
 
 void callback( char* topic, byte* payload, unsigned int length ) {
@@ -33,9 +33,9 @@ void setup_wifi() {
   delay( 10 );
 
   Serial.print( "Connecting to: " );
-  Serial.print( ssid );
+  Serial.print( Constants::WIFI_SSID );
 
-  WiFi.begin( ssid, password );
+  WiFi.begin( Constants::WIFI_SSID, Constants::WIFI_PASSWORD );
 
   while( WiFi.status() != WL_CONNECTED ) {
     delay( 500 );
@@ -49,11 +49,13 @@ void setup_wifi() {
 }
 
 void setup() {
+  root["count"] = value;
+  
   Serial.begin( 115200 );
   
   setup_wifi();
   
-  client.setServer( mqtt_server, 1883 );
+  client.setServer( Constants::IOT_HOST, 1883 );
   client.setCallback( callback );
 }
 
@@ -61,9 +63,8 @@ void reconnect() {
   while( !client.connected() ) {
     Serial.print( "Watson IoT ... " );
 
-    if( client.connect( "d:ts200f:Thing:IBM", "use-token-auth", "!23?Dto&exYXb97bq0" ) ) {
+    if( client.connect( Constants::IOT_CLIENT, "use-token-auth", Constants::IOT_PASSWORD ) ) {
       Serial.println( "Connected" );
-      // client.publish("outTopic", "hello world");
       // client.subscribe("inTopic");
     } else {
       Serial.print( " Failed. (rc = " );
@@ -76,7 +77,9 @@ void reconnect() {
   }
 }
 
-void loop() {
+void loop() {  
+  char json[200];
+  
   if( !client.connected() ) {
     reconnect();
   }
@@ -87,13 +90,15 @@ void loop() {
   
   if( now - lastMsg > 1000 ) {
     lastMsg = now;
-    ++value;
-    snprintf( msg, 75, "{\"count\": %ld}", value );
+    value = value + 1;
+
+    root["count"] = value;
+    root.printTo( json, 200 );
     
     Serial.print( "Publish message: " );
-    Serial.println( msg );
-    
-    client.publish( "iot-2/evt/count/fmt/json", msg );
+    Serial.println( json );
+
+    client.publish( "iot-2/evt/count/fmt/json", json );
   }
 }
 
