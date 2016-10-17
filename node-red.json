@@ -1,0 +1,416 @@
+[
+	{
+		"id": "607e3e12.57801",
+		"type": "ibmiot",
+		"z": "2598e5c9.01e81a",
+		"name": "Watson IoT"
+	},
+	{
+		"id": "fb5059b9.fe9518",
+		"type": "ibmiot in",
+		"z": "2598e5c9.01e81a",
+		"authentication": "apiKey",
+		"apiKey": "607e3e12.57801",
+		"inputType": "cmd",
+		"deviceId": "IBM",
+		"applicationId": "",
+		"deviceType": "Imp",
+		"eventType": "led",
+		"commandType": "led",
+		"format": "json",
+		"name": "Watson IoT",
+		"service": "registered",
+		"allDevices": "",
+		"allApplications": "",
+		"allDeviceTypes": "",
+		"allEvents": "",
+		"allCommands": "",
+		"allFormats": "",
+		"x": 110,
+		"y": 100,
+		"wires": [
+			[
+				"6925679c.486608"
+			]
+		]
+	},
+	{
+		"id": "7da2bfdf.524f6",
+		"type": "debug",
+		"z": "2598e5c9.01e81a",
+		"name": "",
+		"active": false,
+		"console": "false",
+		"complete": "false",
+		"x": 550,
+		"y": 100,
+		"wires": [
+
+		]
+	},
+	{
+		"id": "6925679c.486608",
+		"type": "http request",
+		"z": "2598e5c9.01e81a",
+		"name": "Send to Imp",
+		"method": "POST",
+		"ret": "txt",
+		"url": "https://agent.electricimp.com/qFyyIQfIXCDj",
+		"x": 330,
+		"y": 100,
+		"wires": [
+			[
+				"7da2bfdf.524f6"
+			]
+		]
+	},
+	{
+		"id": "1dec78d3.d77997",
+		"type": "http in",
+		"z": "2598e5c9.01e81a",
+		"name": "Cloud Function",
+		"url": "/windy/cloud",
+		"method": "post",
+		"swaggerDoc": "",
+		"x": 120,
+		"y": 280,
+		"wires": [
+			[
+				"a567eca3.32411"
+			]
+		]
+	},
+	{
+		"id": "f42e8059.c0b3a",
+		"type": "comment",
+		"z": "2598e5c9.01e81a",
+		"name": "Electric Imp",
+		"info": "",
+		"x": 110,
+		"y": 40,
+		"wires": [
+
+		]
+	},
+	{
+		"id": "89995886.663748",
+		"type": "comment",
+		"z": "2598e5c9.01e81a",
+		"name": "Particle Electron",
+		"info": "",
+		"x": 120,
+		"y": 160,
+		"wires": [
+
+		]
+	},
+	{
+		"id": "6a0a1074.9fd25",
+		"type": "http request",
+		"z": "2598e5c9.01e81a",
+		"name": "Generate Token",
+		"method": "POST",
+		"ret": "obj",
+		"url": "https://api.particle.io/oauth/token",
+		"x": 560,
+		"y": 220,
+		"wires": [
+			[
+				"30d8084b.f47c18"
+			]
+		]
+	},
+	{
+		"id": "a567eca3.32411",
+		"type": "function",
+		"z": "2598e5c9.01e81a",
+		"name": "Get Desired State",
+		"func": "msg.calling = msg.payload.calling;\nmsg.value = msg.payload.value;\nmsg.headers = {\n    'Content-Type': 'application/x-www-form-urlencoded'\n};\nmsg.payload = {\n    grant_type: 'password',\n    username: '_PARTICLE_ACCOUNT_EMAIL_',\n    password: '_PARTICLE_ACCOUNT_PASSWORD_',\n    expires_in: 120\n};\nreturn msg;",
+		"outputs": 1,
+		"noerr": 0,
+		"x": 350,
+		"y": 220,
+		"wires": [
+			[
+				"6a0a1074.9fd25"
+			]
+		]
+	},
+	{
+		"id": "830f0b3f.71cfd8",
+		"type": "debug",
+		"z": "2598e5c9.01e81a",
+		"name": "",
+		"active": true,
+		"console": "false",
+		"complete": "payload",
+		"x": 550,
+		"y": 400,
+		"wires": [
+
+		]
+	},
+	{
+		"id": "919db8ef.5ac3b8",
+		"type": "http response",
+		"z": "2598e5c9.01e81a",
+		"name": "Disconnect Client",
+		"x": 350,
+		"y": 400,
+		"wires": [
+
+		]
+	},
+	{
+		"id": "30d8084b.f47c18",
+		"type": "function",
+		"z": "2598e5c9.01e81a",
+		"name": "Authorize Call",
+		"func": "msg.token = msg.payload.access_token;\nmsg.headers = null;\nmsg.payload = null;\nreturn msg;",
+		"outputs": 1,
+		"noerr": 0,
+		"x": 340,
+		"y": 280,
+		"wires": [
+			[
+				"2986756c.d3821a"
+			]
+		]
+	},
+	{
+		"id": "2986756c.d3821a",
+		"type": "http request",
+		"z": "2598e5c9.01e81a",
+		"name": "Get Device List",
+		"method": "GET",
+		"ret": "obj",
+		"url": "https://api.particle.io/v1/devices?access_token={{{token}}}",
+		"x": 560,
+		"y": 280,
+		"wires": [
+			[
+				"1c657456.71d01c"
+			]
+		]
+	},
+	{
+		"id": "1c657456.71d01c",
+		"type": "function",
+		"z": "2598e5c9.01e81a",
+		"name": "Assign Device",
+		"func": "for( var d = 0; d < msg.payload.length; d++ ) {\n    if( msg.payload[d].cellular === true ) {\n        msg.device = msg.payload[d].id;\n        break;\n    }    \n}\nmsg.payload = {\n    arg: msg.value\n};\nmsg.headers = {\n    'Content-Type': 'application/json'    \n};\nreturn msg;",
+		"outputs": 1,
+		"noerr": 0,
+		"x": 340,
+		"y": 340,
+		"wires": [
+			[
+				"9ce0683e.a55c88"
+			]
+		]
+	},
+	{
+		"id": "9ce0683e.a55c88",
+		"type": "http request",
+		"z": "2598e5c9.01e81a",
+		"name": "Call Function",
+		"method": "POST",
+		"ret": "obj",
+		"url": "https://api.particle.io/v1/devices/{{{device}}}/{{{calling}}}?access_token={{{token}}}",
+		"x": 550,
+		"y": 340,
+		"wires": [
+			[
+				"830f0b3f.71cfd8",
+				"919db8ef.5ac3b8"
+			]
+		]
+	},
+	{
+		"id": "1dd38bc6.28a014",
+		"type": "http in",
+		"z": "2598e5c9.01e81a",
+		"name": "Button Press",
+		"url": "/windy/button",
+		"method": "post",
+		"swaggerDoc": "",
+		"x": 110,
+		"y": 460,
+		"wires": [
+			[
+				"ea7d3689.2ffd38"
+			]
+		]
+	},
+	{
+		"id": "f15a3380.34881",
+		"type": "http response",
+		"z": "2598e5c9.01e81a",
+		"name": "Disconnect Client",
+		"x": 350,
+		"y": 520,
+		"wires": [
+
+		]
+	},
+	{
+		"id": "b8e84c6b.e6ca7",
+		"type": "debug",
+		"z": "2598e5c9.01e81a",
+		"name": "",
+		"active": true,
+		"console": "false",
+		"complete": "false",
+		"x": 550,
+		"y": 520,
+		"wires": [
+
+		]
+	},
+	{
+		"id": "ea7d3689.2ffd38",
+		"type": "function",
+		"z": "2598e5c9.01e81a",
+		"name": "Isolate Press",
+		"func": "msg.payload = JSON.stringify( {\n    pressed: true\n} );\nreturn msg;",
+		"outputs": 1,
+		"noerr": 0,
+		"x": 330,
+		"y": 460,
+		"wires": [
+			[
+				"424e95a4.a03dac",
+				"b8e84c6b.e6ca7",
+				"f15a3380.34881"
+			]
+		]
+	},
+	{
+		"id": "424e95a4.a03dac",
+		"type": "ibmiot out",
+		"z": "2598e5c9.01e81a",
+		"authentication": "apiKey",
+		"apiKey": "607e3e12.57801",
+		"outputType": "evt",
+		"deviceId": "IBM",
+		"deviceType": "Electron",
+		"eventCommandType": "button",
+		"format": "json",
+		"data": "Message payload.",
+		"name": "Watson IoT",
+		"service": "registered",
+		"x": 550,
+		"y": 460,
+		"wires": [
+
+		]
+	},
+	{
+		"id": "7445bd28.0210a4",
+		"type": "http in",
+		"z": "2598e5c9.01e81a",
+		"name": "Light Level",
+		"url": "/windy/light",
+		"method": "post",
+		"swaggerDoc": "",
+		"x": 100,
+		"y": 580,
+		"wires": [
+			[
+				"f589ab57.0d7298"
+			]
+		]
+	},
+	{
+		"id": "ce16e83b.74f2d8",
+		"type": "http response",
+		"z": "2598e5c9.01e81a",
+		"name": "Disconnect Client",
+		"x": 350,
+		"y": 640,
+		"wires": [
+
+		]
+	},
+	{
+		"id": "2989b6ae.6d1f1a",
+		"type": "debug",
+		"z": "2598e5c9.01e81a",
+		"name": "",
+		"active": true,
+		"console": "false",
+		"complete": "false",
+		"x": 550,
+		"y": 640,
+		"wires": [
+
+		]
+	},
+	{
+		"id": "f589ab57.0d7298",
+		"type": "function",
+		"z": "2598e5c9.01e81a",
+		"name": "Isolate Light",
+		"func": "msg.payload = JSON.stringify( {\n    light: parseInt( msg.payload.data )\n} );\nreturn msg;",
+		"outputs": 1,
+		"noerr": 0,
+		"x": 330,
+		"y": 580,
+		"wires": [
+			[
+				"6e6d96d7.4dc828",
+				"ce16e83b.74f2d8",
+				"2989b6ae.6d1f1a"
+			]
+		]
+	},
+	{
+		"id": "6e6d96d7.4dc828",
+		"type": "ibmiot out",
+		"z": "2598e5c9.01e81a",
+		"authentication": "apiKey",
+		"apiKey": "607e3e12.57801",
+		"outputType": "evt",
+		"deviceId": "IBM",
+		"deviceType": "Electron",
+		"eventCommandType": "light",
+		"format": "json",
+		"data": "Message payload.",
+		"name": "Watson IoT",
+		"service": "registered",
+		"x": 550,
+		"y": 580,
+		"wires": [
+
+		]
+	},
+	{
+		"id": "b2f37289.280fe",
+		"type": "ibmiot in",
+		"z": "2598e5c9.01e81a",
+		"authentication": "apiKey",
+		"apiKey": "607e3e12.57801",
+		"inputType": "cmd",
+		"deviceId": "IBM",
+		"applicationId": "",
+		"deviceType": "Electron",
+		"eventType": "+",
+		"commandType": "led",
+		"format": "json",
+		"name": "Watson IoT",
+		"service": "registered",
+		"allDevices": "",
+		"allApplications": "",
+		"allDeviceTypes": "",
+		"allEvents": true,
+		"allCommands": "",
+		"allFormats": "",
+		"x": 110,
+		"y": 220,
+		"wires": [
+			[
+				"a567eca3.32411"
+			]
+		]
+	}
+]
